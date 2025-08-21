@@ -52,39 +52,45 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
     
     // --- Funções do Tutorial ---
-    function showTooltip(stepIndex) {
-        document.querySelectorAll('.highlight-element').forEach(el => el.classList.remove('highlight-element'));
-        if (!tutorialSteps[stepIndex]) {
-            overlay.classList.add('hidden');
-            return;
-        }
-
-        const { title, text, icon, target, interactive } = tutorialSteps[stepIndex];
-        const targetElement = target();
-        
-        if (targetElement) {
-            targetElement.classList.add('highlight-element');
-            const rect = targetElement.getBoundingClientRect();
-            // Posiciona o tooltip um pouco abaixo do elemento destacado
-            tooltip.style.top = `${window.scrollY + rect.bottom + 15}px`;
-            tooltip.style.left = `${window.scrollX + rect.left}px`;
-            
-            // Ajusta se sair da tela
-            if (rect.left + 350 > window.innerWidth) tooltip.style.left = `${window.innerWidth - 360}px`;
-        }
-        
-        tooltipTitle.textContent = title;
-        tooltipText.textContent = text;
-        tooltipIcon.textContent = icon || '';
-        
-        overlay.classList.toggle('interactive-mode', !!interactive);
-        overlay.classList.remove('hidden');
-        tooltip.classList.remove('hidden');
-
-        nextBtn.classList.toggle('hidden', !!interactive);
-        nextBtn.textContent = (stepIndex === tutorialSteps.length - 1) ? 'Fechar' : 'Próximo';
-        nextBtn.setAttribute('data-step', stepIndex); // Guarda o passo atual no botão
+    // --- Funções do Tutorial ---
+function showTooltip(stepIndex) {
+    document.querySelectorAll('.highlight-element').forEach(el => el.classList.remove('highlight-element'));
+    if (!tutorialSteps[stepIndex]) {
+        overlay.classList.add('hidden');
+        return;
     }
+    const { title, text, icon, target, interactive } = tutorialSteps[stepIndex];
+    const targetElement = target();
+    if (targetElement) {
+        targetElement.classList.add('highlight-element');
+        const rect = targetElement.getBoundingClientRect();
+        // *** INÍCIO DA LÓGICA DE POSICIONAMENTO CORRIGIDA ***
+        const tooltipHeight = tooltip.offsetHeight; // Mede a altura do tooltip
+        const spaceBelow = window.innerHeight - rect.bottom; // Calcula o espaço abaixo do elemento
+        const margin = 15; // Uma pequena margem de segurança
+        // Se o espaço abaixo não for suficiente para o tooltip, posiciona ACIMA.
+        if (spaceBelow < (tooltipHeight + margin)) {
+            tooltip.style.top = `${window.scrollY + rect.top - tooltipHeight - margin}px`;
+        } 
+        // Senão, posiciona ABAIXO (comportamento padrão).
+        else {
+            tooltip.style.top = `${window.scrollY + rect.bottom + margin}px`;
+        }
+        // *** FIM DA LÓGICA DE POSICIONAMENTO CORRIGIDA ***
+        tooltip.style.left = `${window.scrollX + rect.left}px`;
+        // Ajusta se sair da tela lateralmente
+        if (rect.left + 350 > window.innerWidth) tooltip.style.left = `${window.innerWidth - 360}px`;
+    }
+    tooltipTitle.textContent = title;
+    tooltipText.textContent = text;
+    tooltipIcon.textContent = icon || '';
+    overlay.classList.toggle('interactive-mode', !!interactive);
+    overlay.classList.remove('hidden');
+    tooltip.classList.remove('hidden');
+    nextBtn.classList.toggle('hidden', !!interactive);
+    nextBtn.textContent = (stepIndex === tutorialSteps.length - 1) ? 'Fechar' : 'Próximo';
+    nextBtn.setAttribute('data-step', stepIndex); // Guarda o passo atual no botão
+}
 
     function advanceTutorial() {
         currentStep++;
@@ -148,4 +154,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Iniciar o tutorial ---
     showTooltip(currentStep); // Mostra o primeiro passo (índice 0)
+
 });
