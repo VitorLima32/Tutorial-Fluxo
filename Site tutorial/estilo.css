@@ -1,0 +1,155 @@
+@import url('https://fonts.googleapis.com/css2?family=Segoe+UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira+Sans,Droid+Sans,Helvetica+Neue,sans-serif');
+
+:root {
+    --cor-fundo: #f4f4f4;
+    --cor-coluna: #ffffff;
+    --cor-borda: #e1e1e1;
+    --cor-texto: #333333;
+    --cor-cartao: #f8f8f8;
+    --cor-cartao-destaque: #fffbe6;
+    --cor-borda-destaque: #ffc107;
+    --cor-botao: #0078d4;
+    --sombra-leve: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    line-height: 1.6;
+}
+
+header {
+    background-color: #fff;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid var(--cor-borda);
+    display: flex;
+    align-items: center;
+    box-shadow: var(--sombra-leve);
+}
+
+.logo { height: 32px; margin-right: 15px; }
+.container { padding: 2rem; max-width: 1400px; margin: auto; }
+
+.header-kanban {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.add-button {
+    background-color: var(--cor-botao);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+.add-button:hover { background-color: #005a9e; }
+
+.kanban-board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+
+.kanban-column {
+    background-color: var(--cor-coluna);
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid var(--cor-borda);
+    box-shadow: var(--sombra-leve);
+}
+.kanban-column h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--cor-borda);
+}
+
+.cards-container { min-height: 200px; }
+
+.card {
+    background-color: var(--cor-cartao);
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    box-shadow: var(--sombra-leve);
+    border: 1px solid #ddd;
+    border-left: 4px solid var(--cor-botao);
+    cursor: grab;
+}
+.card.highlight-card {
+    background-color: var(--cor-cartao-destaque);
+    border-left: 4px solid var(--cor-borda-destaque);
+    border-color: var(--cor-borda-destaque);
+}
+.card:active { cursor: grabbing; }
+.card p { font-size: 14px; color: #666; margin-top: 5px; }
+
+.sortable-ghost { opacity: 0.4; background: #c8ebfb; }
+
+/* --- ESTILOS DO TUTORIAL --- */
+#tutorial-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+#tutorial-overlay.interactive-mode { pointer-events: none; }
+#tutorial-overlay.interactive-mode #tutorial-tooltip { pointer-events: auto; }
+
+#tutorial-tooltip {
+    position: absolute;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    max-width: 350px;
+    border-top: 4px solid var(--cor-botao);
+    transition: top 0.3s ease, left 0.3s ease;
+    z-index: 1001;
+}
+#tooltip-icon { font-size: 24px; margin-bottom: 10px; color: var(--cor-botao); }
+#tooltip-title { margin-top: 0; color: var(--cor-botao); }
+.tooltip-buttons { margin-top: 15px; text-align: right; }
+#tooltip-next-btn {
+    background-color: var(--cor-botao);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.hidden { display: none !important; }
+
+/* Modal de Preenchimento */
+#form-modal {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    width: 400px;
+    z-index: 1001;
+    position: absolute;
+}
+#form-modal h3 { margin-top: 0; }
+#form-modal label { display: block; margin-bottom: 8px; font-weight: 600; }
+#form-modal input { width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--cor-borda); margin-bottom: 15px; }
+
+.highlight-element {
+    position: relative;
+    z-index: 1000;
+    box-shadow: 0 0 0 4px rgba(0, 120, 212, 0.7) !important;
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease;
+}
